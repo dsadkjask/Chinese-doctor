@@ -521,8 +521,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31622245c84ee45419c09602a2114768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToGo: 2
-  positionToGo: {x: 2.5, y: -6, z: -1.5}
+  sceneToGo: farm
+  positionToGo: {x: -1, y: 1, z: 0}
 --- !u!4 &200003786
 Transform:
   m_ObjectHideFlags: 0
