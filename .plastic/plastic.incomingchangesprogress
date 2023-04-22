@@ -1,0 +1,20 @@
+[
+  {
+    "MountId": "56e62dd7-241f-41e9-8c6b-dd4ca4513e62",
+    "AncestorCsetIds": [
+      1
+    ],
+    "SourceCsetId": 2,
+    "DestinationCsetId": 1,
+    "FileConflicts": [
+      {
+        "Path": "/Assets/Scenes/public.unity",
+        "ItemId": 5281,
+        "ParentItemId": 5143,
+        "BaseRevId": 4827,
+        "SourceRevId": 10762,
+        "DestinationRevId": 4827
+      }
+    ]
+  }
+]

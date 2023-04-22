@@ -1,0 +1,4 @@
+repository "中医-4.20@a47ab37e-726b-4ad1-84fa-a919a9ed98bc@cloud.cn"
+  path "/"
+    smartbranch "/main" 
+     
