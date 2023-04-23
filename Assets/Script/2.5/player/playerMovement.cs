@@ -65,6 +65,7 @@ public class playerMovement : MonoBehaviour
         EventHandler.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
         EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadedEvent;
         EventHandler.MoveToPosition += OnMoveToPosition;
+        EventHandler.MouseClickedEvent += OnMouseClickedEvent;
     }
 
     private void OnDisable()
@@ -72,12 +73,37 @@ public class playerMovement : MonoBehaviour
         EventHandler.BeforeSceneUnloadEvent -= OnBeforeSceneUnloadEvent;
         EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadedEvent;
         EventHandler.MoveToPosition -= OnMoveToPosition;
+        EventHandler.MouseClickedEvent -= OnMouseClickedEvent;
     }
 
     private void FixedUpdate()
  {
      
  }
+
+    private void OnMouseClickedEvent(Vector3 mouseWorldPos, ItemDetails itemDetails)
+    {
+        // if (useTool)
+        //     return;
+
+         // //TODO:执行动画
+        // if (itemDetails.itemType != ItemType.Seed && itemDetails.itemType != ItemType.Commodity && itemDetails.itemType != ItemType.Furniture)
+        // {
+        //     mouseX = mouseWorldPos.x - transform.position.x;
+        //     mouseY = mouseWorldPos.y - (transform.position.y + 0.85f);
+
+        //     if (Mathf.Abs(mouseX) > Mathf.Abs(mouseY))
+        //         mouseY = 0;
+        //     else
+        //         mouseX = 0;
+
+        //     StartCoroutine(UseToolRoutine(mouseWorldPos, itemDetails));
+        // }
+        // else
+        // {
+             EventHandler.CallExecuteActionAfterAnimation(mouseWorldPos, itemDetails);
+        // }
+    }
 
     private void OnMoveToPosition(Vector3 targetPosition)
     {

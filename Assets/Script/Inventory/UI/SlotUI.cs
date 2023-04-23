@@ -41,7 +41,7 @@ namespace Inventory
         {
             isSelected = false;//让一开始没有东西被选中
 
-            if (itemDetails.itemID == 0)//让游戏一开始将所有的没有物品的格子都调用UpdateEmptySlot()函数,这里不能用等于null，会报错
+            if (itemDetails.itemID == null)//让游戏一开始将所有的没有物品的格子都调用UpdateEmptySlot()函数,这里不能用等于null，会报错
             {
                 UpdateEmptySlot();
             }
@@ -65,10 +65,10 @@ namespace Inventory
             {
                 isSelected = false;//就不能让它被选中
 
-                //inventoryUI.UpdateSlotHightlight(-1);
-                //EventHandler.CallItemSelectedEvent(itemDetails, isSelected);
+                inventoryUI.UpdateSlotHightlight(-1);
+                EventHandler.CallItemSelectedEvent(itemDetails, isSelected);
             }
-            itemDetails = null;//
+            itemDetails = null;//清空
             slotImage.enabled = false;//将图片关掉
             amountText.text = string.Empty;//文本也清空
             button.interactable = false;//设置按钮也不能被点按

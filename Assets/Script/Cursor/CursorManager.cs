@@ -65,11 +65,11 @@ public class CursorManager : MonoBehaviour
 
         cursorImage.transform.position = Input.mousePosition;
 
-         if (!InteractWithUI() && cursorEnable)// 
+         if (!InteractWithUI() && cursorEnable)// 代表点中了快捷栏的物品，且鼠标没有在ui上
          {
              SetCursorImage(currentSprite);
              CheckCursorValid();
-        //     CheckPlayerInput();
+             CheckPlayerInput();
          }
          else
          {
@@ -78,14 +78,14 @@ public class CursorManager : MonoBehaviour
          }
     }
 
-//     private void CheckPlayerInput()
-//     {
-//         if (Input.GetMouseButtonDown(0) && cursorPositionValid)
-//         {
-//             //执行方法
-//             EventHandler.CallMouseClickedEvent(mouseWorldPos, currentItem);
-//         }
-//     }
+    private void CheckPlayerInput()
+    {
+        if (Input.GetMouseButtonDown(0) && cursorPositionValid)//当鼠标按下，且鼠标当前位置可用，则执行鼠标点击事件（返回鼠标位置，和判断当前是什么物品）,
+        {
+            //执行方法
+            EventHandler.CallMouseClickedEvent(mouseWorldPos, currentItem);
+        }
+    }
 
     private void OnBeforeSceneUnloadEvent()
     {
@@ -198,12 +198,12 @@ public class CursorManager : MonoBehaviour
                 case ItemType.Commodity://选中商品时，物品是否可以扔，可以就将它设置为可用状，否则不可用
                     if (currentTile.canDropItem && currentItem.canDropped) SetCursorValid(); else SetCursorInValid();
                     break;
-                // case ItemType.HoeTool:
-                //     if (currentTile.canDig) SetCursorValid(); else SetCursorInValid();
-                //     break;
-                // case ItemType.WaterTool:
-                //     if (currentTile.daysSinceDug > -1 && currentTile.daysSinceWatered == -1) SetCursorValid(); else SetCursorInValid();
-                //     break;
+                case ItemType.HoeTool:
+                    if (currentTile.canDig) SetCursorValid(); else SetCursorInValid();
+                    break;
+                case ItemType.WaterTool:
+                    if (currentTile.daysSinceDug > -1 && currentTile.daysSinceWatered == -1) SetCursorValid(); else SetCursorInValid();
+                    break;
                 // case ItemType.BreakTool:
                 // case ItemType.ChopTool:
                 //     if (crop != null)

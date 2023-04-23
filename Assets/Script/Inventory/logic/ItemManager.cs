@@ -18,7 +18,7 @@ public class ItemManager : MonoBehaviour
     private void OnEnable()
         {
             EventHandler.InstantiateItemInScene += OnInstantiateItemInScene;//注册这个方法
-            // EventHandler.DropItemEvent += OnDropItemEvent;
+            EventHandler.DropItemEvent += OnDropItemEvent;
 
              EventHandler.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
              EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadedEvent;
@@ -31,7 +31,7 @@ public class ItemManager : MonoBehaviour
         private void OnDisable()
         {
             EventHandler.InstantiateItemInScene -= OnInstantiateItemInScene;//关闭这个方法
-            // EventHandler.DropItemEvent -= OnDropItemEvent;
+            EventHandler.DropItemEvent -= OnDropItemEvent;
              EventHandler.BeforeSceneUnloadEvent -= OnBeforeSceneUnloadEvent;
              EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadedEvent;
             // EventHandler.BuildFurnitureEvent -= OnBuildFurnitureEvent;
@@ -61,6 +61,19 @@ public class ItemManager : MonoBehaviour
             var item = Instantiate(bounceItemPrefab, pos, Quaternion.identity, itemParent);
             item.itemID = ID;
             //item.GetComponent<ItemBounce>().InitBounceItem(pos, Vector3.up);
+        }
+
+        private void OnDropItemEvent(int ID, Vector3 mousePos, ItemType itemType)
+        {
+            // if (itemType == ItemType.Seed) return;
+
+            // var item = Instantiate(bounceItemPrefab, PlayerTransform.position, Quaternion.identity, itemParent);
+            // item.itemID = ID;
+            // var dir = (mousePos - PlayerTransform.position).normalized;
+            // item.GetComponent<ItemBounce>().InitBounceItem(mousePos, dir);
+
+            var item = Instantiate(bounceItemPrefab, mousePos, Quaternion.identity, itemParent);
+            item.itemID = ID;
         }
 
         // 获得当前场景所有Item

@@ -21,6 +21,54 @@ namespace Inventory
             // saveable.RegisterSaveable();
              EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, playerBag.itemList);
         }
+
+        private void OnEnable()
+        {
+            EventHandler.DropItemEvent += OnDropItemEvent;
+            // EventHandler.HarvestAtPlayerPosition += OnHarvestAtPlayerPosition;
+            // //建造
+            // EventHandler.BuildFurnitureEvent += OnBuildFurnitureEvent;
+            // EventHandler.BaseBagOpenEvent += OnBaseBagOpenEvent;
+            // EventHandler.StartNewGameEvent += OnStartNewGameEvent;
+        }
+
+        private void OnDisable()
+        {
+            EventHandler.DropItemEvent -= OnDropItemEvent;
+            // EventHandler.HarvestAtPlayerPosition -= OnHarvestAtPlayerPosition;
+            // EventHandler.BuildFurnitureEvent -= OnBuildFurnitureEvent;
+            // EventHandler.BaseBagOpenEvent -= OnBaseBagOpenEvent;
+            // EventHandler.StartNewGameEvent -= OnStartNewGameEvent;
+        }
+
+        private void OnDropItemEvent(int ID, Vector3 pos, ItemType itemType)//扔东西事件，每次只扔一个
+        {
+            RemoveItem(ID, 1);
+        }
+
+        /// <summary>
+        /// 移除指定数量的背包物品
+        /// </summary>
+        /// <param name="ID">物品ID</param>
+        /// <param name="removeAmount">数量</param>
+        private void RemoveItem(int ID, int removeAmount)//移除物品的方法，要移除的ID，个数
+        {
+            var index = GetItemIndexInBag(ID);//拿到ID
+
+            if (playerBag.itemList[index].itemAmount > removeAmount)//判断数量是否大于要移除的个数
+            {
+                var amount = playerBag.itemList[index].itemAmount - removeAmount;//等于当前减去要移除的个数
+                var item = new InventoryItem { itemID = ID, itemAmount = amount };//更新信息
+                playerBag.itemList[index] = item;
+            }
+            else if (playerBag.itemList[index].itemAmount == removeAmount)//如果等于
+            {
+                var item = new InventoryItem();
+                playerBag.itemList[index] = item;
+            }
+
+            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, playerBag.itemList);//刷新玩家身上的UI
+        }
         
         /// 通过ID返回物品信息
         public ItemDetails GetItemDetails(int ID)

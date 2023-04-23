@@ -6,11 +6,11 @@ namespace Map
 {
     public class GridMapManager : Singleton<GridMapManager> //, ISaveable
     {
-    //     [Header("种地瓦片切换信息")]
-    //      public RuleTile digTile;
-    //      public RuleTile waterTile;
-    //     private Tilemap digTilemap;
-    //     private Tilemap waterTilemap;
+        [Header("种地瓦片切换信息")]
+         public RuleTile digTile;
+         public RuleTile waterTile;
+        private Tilemap digTilemap;
+        private Tilemap waterTilemap;
 
         [Header("地图信息")]
         public List<MapData_SO> mapDataList;//场景列表
@@ -27,25 +27,25 @@ namespace Map
     //     //杂草列表
     //     private List<ReapItem> itemsInRadius;
 
-    //     private Grid currentGrid;
+         private Grid currentGrid;//当前格子
 
     //     public string GUID => GetComponent<DataGUID>().guid;
 
-    //     private void OnEnable()
-    //     {
-    //         EventHandler.ExecuteActionAfterAnimation += OnExecuteActionAfterAnimation;
-    //         EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadedEvent;
-    //         EventHandler.GameDayEvent += OnGameDayEvent;
-    //         EventHandler.RefreshCurrentMap += RefreshMap;
-    //     }
+        private void OnEnable()
+        {
+            EventHandler.ExecuteActionAfterAnimation += OnExecuteActionAfterAnimation;
+            EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadedEvent;
+            // EventHandler.GameDayEvent += OnGameDayEvent;
+            // EventHandler.RefreshCurrentMap += RefreshMap;
+        }
 
-    //     private void OnDisable()
-    //     {
-    //         EventHandler.ExecuteActionAfterAnimation -= OnExecuteActionAfterAnimation;
-    //         EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadedEvent;
-    //         EventHandler.GameDayEvent -= OnGameDayEvent;
-    //         EventHandler.RefreshCurrentMap -= RefreshMap;
-    //     }
+        private void OnDisable()
+        {
+            EventHandler.ExecuteActionAfterAnimation -= OnExecuteActionAfterAnimation;
+            EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadedEvent;
+            // EventHandler.GameDayEvent -= OnGameDayEvent;
+            // EventHandler.RefreshCurrentMap -= RefreshMap;
+        }
 
 
         private void Start()
@@ -61,20 +61,20 @@ namespace Map
             }
         }
 
-    //     private void OnAfterSceneLoadedEvent()
-    //     {
-    //         currentGrid = FindObjectOfType<Grid>();
-    //         digTilemap = GameObject.FindWithTag("Dig").GetComponent<Tilemap>();
-    //         waterTilemap = GameObject.FindWithTag("Water").GetComponent<Tilemap>();
+        private void OnAfterSceneLoadedEvent()
+        {
+            currentGrid = FindObjectOfType<Grid>();
+             digTilemap = GameObject.FindWithTag("Dig").GetComponent<Tilemap>();
+             waterTilemap = GameObject.FindWithTag("Water").GetComponent<Tilemap>();
 
-    //         if (firstLoadDict[SceneManager.GetActiveScene().name])
-    //         {
-    //             //预先生成农作物
-    //             EventHandler.CallGenerateCropEvent();
-    //             firstLoadDict[SceneManager.GetActiveScene().name] = false;
-    //         }
-    //         RefreshMap();
-    //     }
+            // if (firstLoadDict[SceneManager.GetActiveScene().name])
+            // {
+            //     //预先生成农作物
+            //     EventHandler.CallGenerateCropEvent();
+            //     firstLoadDict[SceneManager.GetActiveScene().name] = false;
+            // }
+            // RefreshMap();
+        }
 
 
     //     /// <summary>
@@ -185,81 +185,81 @@ namespace Map
         }
 
 
-    //     /// <summary>
-    //     /// 执行实际工具或物品功能
-    //     /// </summary>
-    //     /// <param name="mouseWorldPos">鼠标坐标</param>
-    //     /// <param name="itemDetails">物品信息</param>
-    //     private void OnExecuteActionAfterAnimation(Vector3 mouseWorldPos, ItemDetails itemDetails)
-    //     {
-    //         var mouseGridPos = currentGrid.WorldToCell(mouseWorldPos);
-    //         var currentTile = GetTileDetailsOnMousePosition(mouseGridPos);
+        /// <summary>
+        /// 执行实际工具或物品功能
+        /// </summary>
+        /// <param name="mouseWorldPos">鼠标坐标</param>
+        /// <param name="itemDetails">物品信息</param>
+        private void OnExecuteActionAfterAnimation(Vector3 mouseWorldPos, ItemDetails itemDetails)
+        {
+            var mouseGridPos = currentGrid.WorldToCell(mouseWorldPos);
+            var currentTile = GetTileDetailsOnMousePosition(mouseGridPos);
 
-    //         if (currentTile != null)
-    //         {
-    //             Crop currentCrop = GetCropObject(mouseWorldPos);
+            if (currentTile != null)
+            {
+                // Crop currentCrop = GetCropObject(mouseWorldPos);
 
-    //             //WORKFLOW:物品使用实际功能
-    //             switch (itemDetails.itemType)
-    //             {
-    //                 case ItemType.Seed:
-    //                     EventHandler.CallPlantSeedEvent(itemDetails.itemID, currentTile);
-    //                     EventHandler.CallDropItemEvent(itemDetails.itemID, mouseWorldPos, itemDetails.itemType);
-    //                     EventHandler.CallPlaySoundEvent(SoundName.Plant);
-    //                     break;
-    //                 case ItemType.Commodity:
-    //                     EventHandler.CallDropItemEvent(itemDetails.itemID, mouseWorldPos, itemDetails.itemType);
-    //                     break;
-    //                 case ItemType.HoeTool:
-    //                     SetDigGround(currentTile);
-    //                     currentTile.daysSinceDug = 0;
-    //                     currentTile.canDig = false;
-    //                     currentTile.canDropItem = false;
-    //                     //音效
-    //                     EventHandler.CallPlaySoundEvent(SoundName.Hoe);
-    //                     break;
-    //                 case ItemType.WaterTool:
-    //                     SetWaterGround(currentTile);
-    //                     currentTile.daysSinceWatered = 0;
-    //                     //音效
-    //                     EventHandler.CallPlaySoundEvent(SoundName.Water);
-    //                     break;
-    //                 case ItemType.BreakTool:
-    //                 case ItemType.ChopTool:
-    //                     //执行收割方法
-    //                     currentCrop?.ProcessToolAction(itemDetails, currentCrop.tileDetails);
-    //                     break;
-    //                 case ItemType.CollectTool:
-    //                     // Crop currentCrop = GetCropObject(mouseWorldPos);
-    //                     //执行收割方法
-    //                     currentCrop.ProcessToolAction(itemDetails, currentTile);
-    //                     EventHandler.CallPlaySoundEvent(SoundName.Basket);
-    //                     break;
-    //                 case ItemType.ReapTool:
-    //                     var reapCount = 0;
-    //                     for (int i = 0; i < itemsInRadius.Count; i++)
-    //                     {
-    //                         EventHandler.CallParticleEffectEvent(ParticleEffectType.ReapableScenery, itemsInRadius[i].transform.position + Vector3.up);
-    //                         itemsInRadius[i].SpawnHarvestItems();
-    //                         Destroy(itemsInRadius[i].gameObject);
-    //                         reapCount++;
-    //                         if (reapCount >= Settings.reapAmount)
-    //                             break;
-    //                     }
-    //                     EventHandler.CallPlaySoundEvent(SoundName.Reap);
-    //                     break;
+                //WORKFLOW:物品使用实际功能
+                switch (itemDetails.itemType)
+                {
+                //     case ItemType.Seed:
+                //         EventHandler.CallPlantSeedEvent(itemDetails.itemID, currentTile);
+                //         EventHandler.CallDropItemEvent(itemDetails.itemID, mouseWorldPos, itemDetails.itemType);
+                //         EventHandler.CallPlaySoundEvent(SoundName.Plant);
+                //         break;
+                    case ItemType.Commodity:
+                        EventHandler.CallDropItemEvent(itemDetails.itemID, mouseWorldPos, itemDetails.itemType);
+                        break;
+                    case ItemType.HoeTool:
+                        SetDigGround(currentTile);
+                        currentTile.daysSinceDug = 0;
+                        currentTile.canDig = false;
+                        currentTile.canDropItem = false;
+                        // //音效
+                        // EventHandler.CallPlaySoundEvent(SoundName.Hoe);
+                        break;
+                    case ItemType.WaterTool:
+                        SetWaterGround(currentTile);
+                        currentTile.daysSinceWatered = 0;
+                        // //音效
+                        // EventHandler.CallPlaySoundEvent(SoundName.Water);
+                        break;
+                //     case ItemType.BreakTool:
+                //     case ItemType.ChopTool:
+                //         //执行收割方法
+                //         currentCrop?.ProcessToolAction(itemDetails, currentCrop.tileDetails);
+                //         break;
+                //     case ItemType.CollectTool:
+                //         // Crop currentCrop = GetCropObject(mouseWorldPos);
+                //         //执行收割方法
+                //         currentCrop.ProcessToolAction(itemDetails, currentTile);
+                //         EventHandler.CallPlaySoundEvent(SoundName.Basket);
+                //         break;
+                //     case ItemType.ReapTool:
+                //         var reapCount = 0;
+                //         for (int i = 0; i < itemsInRadius.Count; i++)
+                //         {
+                //             EventHandler.CallParticleEffectEvent(ParticleEffectType.ReapableScenery, itemsInRadius[i].transform.position + Vector3.up);
+                //             itemsInRadius[i].SpawnHarvestItems();
+                //             Destroy(itemsInRadius[i].gameObject);
+                //             reapCount++;
+                //             if (reapCount >= Settings.reapAmount)
+                //                 break;
+                //         }
+                //         EventHandler.CallPlaySoundEvent(SoundName.Reap);
+                //         break;
 
-    //                 case ItemType.Furniture:
-    //                     //在地图上生成物品 ItemManager
-    //                     //移除当前物品（图纸）InventoryManager
-    //                     //移除资源物品 InventoryManger
-    //                     EventHandler.CallBuildFurnitureEvent(itemDetails.itemID, mouseWorldPos);
-    //                     break;
-    //             }
+                //     case ItemType.Furniture:
+                //         //在地图上生成物品 ItemManager
+                //         //移除当前物品（图纸）InventoryManager
+                //         //移除资源物品 InventoryManger
+                //         EventHandler.CallBuildFurnitureEvent(itemDetails.itemID, mouseWorldPos);
+                //         break;
+                // }
 
-    //             UpdateTileDetails(currentTile);
-    //         }
-    //     }
+                // UpdateTileDetails(currentTile);
+            }
+        }
 
     //     /// <summary>
     //     /// 通过物理方法判断鼠标点击位置的农作物
@@ -309,29 +309,29 @@ namespace Map
     //             }
     //         }
     //         return itemsInRadius.Count > 0;
-    //     }
+         }
 
-    //     /// <summary>
-    //     /// 显示挖坑瓦片
-    //     /// </summary>
-    //     /// <param name="tile"></param>
-    //     private void SetDigGround(TileDetails tile)
-    //     {
-    //         Vector3Int pos = new Vector3Int(tile.girdX, tile.gridY, 0);
-    //         if (digTilemap != null)
-    //             digTilemap.SetTile(pos, digTile);
-    //     }
+        /// <summary>
+        /// 显示挖坑瓦片
+        /// </summary>
+        /// <param name="tile"></param>
+        private void SetDigGround(TileDetails tile)
+        {
+            Vector3Int pos = new Vector3Int(tile.girdX, tile.gridY, 0);
+            if (digTilemap != null)
+                digTilemap.SetTile(pos, digTile);
+        }
 
-    //     /// <summary>
-    //     /// 显示浇水瓦片
-    //     /// </summary>
-    //     /// <param name="tile"></param>
-    //     private void SetWaterGround(TileDetails tile)
-    //     {
-    //         Vector3Int pos = new Vector3Int(tile.girdX, tile.gridY, 0);
-    //         if (waterTilemap != null)
-    //             waterTilemap.SetTile(pos, waterTile);
-    //     }
+        /// <summary>
+        /// 显示浇水瓦片
+        /// </summary>
+        /// <param name="tile"></param>
+        private void SetWaterGround(TileDetails tile) 
+        {
+            Vector3Int pos = new Vector3Int(tile.girdX, tile.gridY, 0);
+            if (waterTilemap != null)
+                waterTilemap.SetTile(pos, waterTile);
+        }
 
     //     /// <summary>
     //     /// 更新瓦片信息
@@ -434,6 +434,6 @@ namespace Map
     //     {
     //         this.tileDetailsDict = saveData.tileDetailsDict;
     //         this.firstLoadDict = saveData.firstLoadDict;
-    //     }
+        // }
      }
 }
