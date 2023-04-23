@@ -15,7 +15,7 @@ public class ItemDetails
 
     public string itemDescription;//物品描述
 
-    public int itemUseRaidus;//到时物品如果是可以种或者建筑就有一个建造的范围
+    public int itemUseRadius;//到时物品如果是可以种或者建筑就有一个建造的范围
 
     public bool canPickedup;//是否可以捡起
 
